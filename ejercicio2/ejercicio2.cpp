@@ -8,15 +8,15 @@
 using namespace std;
 
 template <typename T>
-int calcular_Altura(const ArbolBinario<T>& A, const typename ArbolBinario<T>::nodo& nodo){
+int calcularAltura_Rec(const ArbolBinario<T>& A, const typename ArbolBinario<T>::nodo& nodo){
     if (nodo == ArbolBinario<T>::NODO_NULO) return 0;
-    else return 1 + max(calcular_Altura(A, A.hijoIzdo(nodo)),
-                        calcular_Altura(A, A.hijoDer(nodo)));
+    else return 1 + max(calcularAltura_Rec(A, A.hijoIzdo(nodo)),
+                        calcularAltura_Rec(A, A.hijoDer(nodo)));
 }
 
 template <typename T>
 int calcularAltura(const ArbolBinario<T>& A){
     if (A.arbolVacio()) return 0;
-    else return max(calcular_Altura(A, A.hijoIzdo(A.raiz())),
-                    calcular_Altura(A, A.hijoDer(A.raiz())));
+    else return max(calcularAltura_Rec(A, A.hijoIzdo(A.raiz())),
+                    calcularAltura_Rec(A, A.hijoDer(A.raiz())));
 }

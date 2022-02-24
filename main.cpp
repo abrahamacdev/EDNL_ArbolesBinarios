@@ -10,7 +10,7 @@
 
 template <typename T>
 void ejercicio1(ArbolBinario<T>& B){
-    int nodos = calcularNodos(B, B.raiz());
+    int nodos = calcularNodos(B);
     cout << "Nº de nodos del árbol = " << nodos << endl;
 }
 
@@ -87,7 +87,6 @@ void leerArbolDelEscritorio(ArbolBinario<char> *A){
 
         cout << "Introduzca el nombre del archivo (se buscará en el escritorio): ";
         cin >> input;
-        cout << endl;
 
         ifstream is;
 
@@ -96,21 +95,22 @@ void leerArbolDelEscritorio(ArbolBinario<char> *A){
         try {
             is.open(string("C:\\Users\\abrah\\Desktop\\" + input));
         }catch (std::system_error& e){
-            std::cerr << e.code().message() << std::endl;
             error = true;
-            cout << "Vamos a volver a intentarlo" << endl;
+            cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
         }
 
-        rellenarArbolBinario(is, *A);
-        is.close();
-
-        if (!error) continuar = false;
+        if (!error){
+            rellenarArbolBinario(is, *A);
+            is.close();
+            continuar = false;
+        }
     }
 }
 
+
 int main() {
 
-    // Para comprobar la estructura de cada árbol, mirar apuntes del iPad "Notas Árbol Binario"
+    // TODO Para comprobar la estructura de cada árbol, mirar apuntes del iPad "Notas Árbol Binario"
 
     ArbolBinario<char> B;
 
@@ -124,7 +124,7 @@ int main() {
     ejercicio1(B);
 
     // Ejercicio 2 y 5
-    ejercicio2_5( B);
+    ejercicio2_5(B);
 
     // Ejercicio 3 y 5
     ejercicio3_5( B);

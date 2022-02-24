@@ -9,7 +9,8 @@
 
 template <typename T>
 int calcularProfundidad(const ArbolBinario<T>& A, const typename ArbolBinario<T>::nodo& nodo){
-    if(nodo == A.raiz()) return 0;
+    if (nodo == ArbolBinario<T>::NODO_NULO) return -1;
+    else if (nodo == A.raiz()) return 0;
     else return 1 + calcularProfundidad(A, A.padre(nodo));
 }
 

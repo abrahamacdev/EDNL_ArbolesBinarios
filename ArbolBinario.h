@@ -1,7 +1,10 @@
 #ifndef ARBOLBINARIO_ARBOLBINARIO_H
 #define ARBOLBINARIO_ARBOLBINARIO_H
 
+#include <iostream>
 #include "cassert"
+#include "algorithm"
+using namespace std;
 
 /**
  * Un árbol binario es un árbol que, como máximo, puede ser de grado 2, es decir, tiene: 0, 1 ó dos hijos.
@@ -96,6 +99,10 @@ class ArbolBinario {
     void eliminarHijoDer(nodo n);
     void eliminarRaiz();
 
+    // TODO Operaciones nuevas
+    int profundidad(nodo n) const;
+    int altura(nodo n) const;
+
     // Operadores
     ArbolBinario<T>& operator =(const ArbolBinario<T>& a);
 
@@ -114,6 +121,7 @@ class ArbolBinario {
         // Métodos auxiliares
         nodo copiar(nodo n);
         void destruirNodos(nodo& n);
+        int calcularAltura(nodo n) const;
 };
 
 // Definimos el valor de la constante NODO_NULO
@@ -284,6 +292,38 @@ typename ArbolBinario<T>::nodo ArbolBinario<T>::copiar(nodo n) {
     }
 
     return m;
+}
+// -------------
+
+// TODO --- Métodos nuevos ---
+template<typename T>
+int ArbolBinario<T>::profundidad(ArbolBinario::nodo n) const{
+
+    if (n == NODO_NULO) return -1;
+
+    typename ArbolBinario<T>::nodo actual = n;
+
+    int i = 0;
+    while (actual != r){
+        i++;
+        actual = actual->padre;
+    }
+
+    return i;
+}
+
+template <typename T>
+int ArbolBinario<T>::calcularAltura(nodo n) const{
+    if(n == NODO_NULO) return 0;
+    else return 1 + std::max(calcularAltura(hijoIzdo(n)),
+                             calcularAltura(hijoDer(n)));
+}
+
+template <typename T>
+int ArbolBinario<T>::altura(ArbolBinario<T>::nodo n) const{
+    if (n == ArbolBinario<T>::NODO_NULO) return 0;
+    return max(calcularAltura(hijoIzdo(n)),
+               calcularAltura(hijoDer(n)));
 }
 // -------------
 
