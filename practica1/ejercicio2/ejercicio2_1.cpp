@@ -3,7 +3,7 @@
 //
 
 #include <algorithm>
-#include "ejercicio2.h"
+#include "ejercicio2_1.h"
 
 using namespace std;
 

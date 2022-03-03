@@ -2,10 +2,10 @@
 // Created by abrah on 21/02/2022.
 //
 
-#ifndef PRACTICA1EDNL_EJERCICIO6_H
-#define PRACTICA1EDNL_EJERCICIO6_H
+#ifndef PRACTICA1EDNL_EJERCICIO6_1_H
+#define PRACTICA1EDNL_EJERCICIO6_1_H
 
-#include "../ArbolBinario.h"
+#include "../../ArbolBinario.h"
 #include "algorithm"
 
 using namespace std;
@@ -51,4 +51,4 @@ int desequilibrio(ArbolBinario<T>& A){
                desequilibrio(A, A.hijoDer(A.raiz())));
 };*/
 
-#endif //PRACTICA1EDNL_EJERCICIO6_H
+#endif //PRACTICA1EDNL_EJERCICIO6_1_H

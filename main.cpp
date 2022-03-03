@@ -1,28 +1,29 @@
-
 #include "ArbolBinario.h"
 #include "ArbolBinarioIO.cpp"
 #include "fstream"
-#include "ejercicio1/ejercicio1.h"
-#include "ejercicio2/ejercicio2.cpp"
-#include "ejercicio3/ejercicio3.h"
-#include "ejercicio6/ejercicio6.h"
-#include "ejercicio7/ejercicio7.h"
+#include "cstdlib"
+#include "practica1/ejercicio1/ejercicio1_1.h"
+#include "practica1/ejercicio2/ejercicio2_1.cpp"
+#include "practica1/ejercicio3/ejercicio3_1.h"
+#include "practica1/ejercicio6/ejercicio6_1.h"
+#include "practica1/ejercicio7/ejercicio7_1.h"
+#include "practica2/ejercicio1/ejercicio1_2.h"
 
 template <typename T>
-void ejercicio1(ArbolBinario<T>& B){
+void ejercicio1_1(ArbolBinario<T>& B){
     int nodos = calcularNodos(B);
     cout << "Nº de nodos del árbol = " << nodos << endl;
 }
 
 template <typename T>
-void ejercicio2_5(ArbolBinario<T>& B){
+void ejercicio2_5_1(ArbolBinario<T>& B){
     int altura = calcularAltura(B);
     cout << "Altura del árbol = " << altura << endl;
     cout << "Altura del árbol (método del TAD) = " << B.altura(B.raiz()) << endl;
 }
 
 template <typename T>
-void ejercicio3_5(ArbolBinario<T>& B){
+void ejercicio3_5_1(ArbolBinario<T>& B){
     typename ArbolBinario<char>::nodo nodo = B.hijoIzdo(B.raiz());
     int profundidad = calcularProfundidad(B, nodo);
     cout << "Profundidad desde el nodo '" << B.elemento(nodo) << "' = " << profundidad << endl;
@@ -30,12 +31,12 @@ void ejercicio3_5(ArbolBinario<T>& B){
 }
 
 template <typename T>
-void ejercicio6(ArbolBinario<T>& B){
+void ejercicio6_1(ArbolBinario<T>& B){
     cout << "Desequilibrio del árbol = " << desequilibrio(B) << endl;
 }
 
 template <typename T>
-void ejercicio7(ArbolBinario<T>& B){
+void ejercicio7_1(ArbolBinario<T>& B){
     string bEsPseudoCompleto = pseudoCompleto(B) ? "SI" : "NO";
     cout << "El árbol  " << bEsPseudoCompleto << " es pseudo completo";
 }
@@ -58,7 +59,11 @@ void pedirYGuardar(){
         cin >> input;
         cout << endl;
 
-        string outputFile = string("C:\\Users\\abrah\\Desktop\\" + input + ".dat");
+        string outputFile;
+        if (getenv("windir")) outputFile = string("C:\\Users\\abrah\\Desktop\\" + input) + ".dat";
+        else outputFile = string(string(getenv("HOME")) + "/Desktop/" + input + ".dat");
+
+        cout << outputFile << endl;
 
         cout << "Guardanddo en " << outputFile << endl;
 
@@ -93,7 +98,8 @@ void leerArbolDelEscritorio(ArbolBinario<char> *A){
         // Necesario para tratar error
         is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try {
-            is.open(string("C:\\Users\\abrah\\Desktop\\" + input));
+            if (getenv("windir")) is.open(string("C:\\Users\\abrah\\Desktop\\" + input));
+            else is.open(string(string(getenv("HOME")) + "/Desktop/" + input));
         }catch (std::system_error& e){
             error = true;
             cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
@@ -112,28 +118,39 @@ int main() {
 
     // TODO Para comprobar la estructura de cada árbol, mirar apuntes del iPad "Notas Árbol Binario"
 
+    ArbolBinario<char> A;
     ArbolBinario<char> B;
 
+    //pedirYGuardar();
+    leerArbolDelEscritorio(&A);
     leerArbolDelEscritorio(&B);
+
+    cout << "****** Árbol ******" << endl;
+    imprimirArbolBinario(A);
+    cout << "*********************" << endl << endl;
 
     cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(B);
     cout << "*********************" << endl << endl;
 
+    const char* tSimilares = similares(A, B) ? "Sí" : "No";
+    cout << "Los árboles son similares? " << tSimilares << endl;
+
+    /*
     // Ejericicio 1
-    ejercicio1(B);
+    ejercicio1_1(B);
 
     // Ejercicio 2 y 5
-    ejercicio2_5(B);
+    ejercicio2_5_1(B);
 
     // Ejercicio 3 y 5
-    ejercicio3_5( B);
+    ejercicio3_5_1(B);
 
     // Ejercicio 6
-    ejercicio6(B);
+    ejercicio6_1(B);
 
     // Ejercicio 7
-    ejercicio7(B);
+    ejercicio7_1(B);*/
 
     return 0;
 }

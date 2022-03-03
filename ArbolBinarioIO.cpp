@@ -3,6 +3,7 @@
 //
 
 #include "ArbolBinarioIO.h"
+#include "stdexcept"
 
 using namespace std;
 
@@ -89,15 +90,24 @@ void rellenarArbolBinario(istream& input, ArbolBinario<T>& A){
     T fin = (T) input.get();
     input.get();    // Leemos el salto de línea
 
-    // Insertamos la raíz
-    A.insertarRaiz(input.get());
-    input.get();    // Leemos el espacio
+    char raiz = input.get();
 
-    typename ArbolBinario<T>::nodo n = A.raiz();
+    if (raiz != fin){
 
-    // Continuamos leyendo el árbol
-    leerNodo(input, A, n, fin, true);
-    leerNodo(input, A, n, fin, false);
+        // Insertamos la raíz
+        A.insertarRaiz(raiz);
+
+        try {
+            input.get();    // Leemos el espacio
+
+            typename ArbolBinario<T>::nodo n = A.raiz();
+
+            // Continuamos leyendo el árbol
+            leerNodo(input, A, n, fin, true);
+            leerNodo(input, A, n, fin, false);
+        }
+        catch (std::exception e){}
+    }
 }
 
 template <typename T>

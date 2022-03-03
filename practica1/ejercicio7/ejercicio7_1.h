@@ -2,9 +2,9 @@
 // Created by abrah on 21/02/2022.
 //
 
-#ifndef PRACTICA1EDNL_EJERCICIO7_H
-#define PRACTICA1EDNL_EJERCICIO7_H
-#include "../ArbolBinario.h"
+#ifndef PRACTICA1EDNL_EJERCICIO7_1_H
+#define PRACTICA1EDNL_EJERCICIO7_1_H
+#include "../../ArbolBinario.h"
 
 template <typename T>
 bool pseudo(ArbolBinario<T>& A, typename ArbolBinario<T>::nodo nodo){
@@ -53,4 +53,4 @@ bool pseudoCompleto(ArbolBinario<T>& A){
     return nodosPenultimoNivel == nodosPseudoCompletos;
 }
 
-#endif //PRACTICA1EDNL_EJERCICIO7_H
+#endif //PRACTICA1EDNL_EJERCICIO7_1_H

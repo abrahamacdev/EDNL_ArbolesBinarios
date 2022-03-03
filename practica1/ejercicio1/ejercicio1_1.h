@@ -2,10 +2,10 @@
 // Created by abrah on 20/02/2022.
 //
 
-#ifndef PRACTICA1EDNL_EJERCICIO1_H
-#define PRACTICA1EDNL_EJERCICIO1_H
+#ifndef PRACTICA1EDNL_EJERCICIO1_1_H
+#define PRACTICA1EDNL_EJERCICIO1_1_H
 
-#include "../ArbolBinario.h"
+#include "../../ArbolBinario.h"
 
 // TODO 1º Las funciones recursivas ponerle de nombre "X_Rec"
 // TODO 2º Poner como primer parámetro el que se va a ir modificando
@@ -21,4 +21,4 @@ int calcularNodos(const ArbolBinario<T>& A){
     return calcularNodos_Rec(A.raiz(), A);
 }
 
-#endif //PRACTICA1EDNL_EJERCICIO1_H
+#endif //PRACTICA1EDNL_EJERCICIO1_1_H

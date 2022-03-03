@@ -2,10 +2,10 @@
 // Created by abrah on 20/02/2022.
 //
 
-#ifndef PRACTICA1EDNL_EJERCICIO3_H
-#define PRACTICA1EDNL_EJERCICIO3_H
+#ifndef PRACTICA1EDNL_EJERCICIO3_1_H
+#define PRACTICA1EDNL_EJERCICIO3_1_H
 
-#include "../ArbolBinario.h"
+#include "../../ArbolBinario.h"
 
 template <typename T>
 int calcularProfundidad(const ArbolBinario<T>& A, const typename ArbolBinario<T>::nodo& nodo){
@@ -14,4 +14,4 @@ int calcularProfundidad(const ArbolBinario<T>& A, const typename ArbolBinario<T>
     else return 1 + calcularProfundidad(A, A.padre(nodo));
 }
 
-#endif //PRACTICA1EDNL_EJERCICIO3_H
+#endif //PRACTICA1EDNL_EJERCICIO3_1_H
