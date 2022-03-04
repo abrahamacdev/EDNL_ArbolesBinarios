@@ -8,6 +8,10 @@
 #include "practica1/ejercicio6/ejercicio6_1.h"
 #include "practica1/ejercicio7/ejercicio7_1.h"
 #include "practica2/ejercicio1/ejercicio1_2.h"
+#include "practica2/ejercicio2/ejercicio2_2.h"
+#include <sys/utsname.h>
+
+static bool WIN_SYS = false;
 
 template <typename T>
 void ejercicio1_1(ArbolBinario<T>& B){
@@ -41,6 +45,19 @@ void ejercicio7_1(ArbolBinario<T>& B){
     cout << "El árbol  " << bEsPseudoCompleto << " es pseudo completo";
 }
 
+template <typename T>
+void ejercicio1_2(ArbolBinario<T>& A, ArbolBinario<T>& B){
+
+    const char* tSimilares = similares(A, B) ? "Sí" : "No";
+    cout << "Los árboles son similares? " << tSimilares << endl;
+}
+
+template <typename T>
+void ejercicio2_2(ArbolBinario<T>& A){
+
+
+}
+
 void pedirYGuardar(){
 
     bool reintentar = true;
@@ -60,7 +77,9 @@ void pedirYGuardar(){
         cout << endl;
 
         string outputFile;
-        if (getenv("windir")) outputFile = string("C:\\Users\\abrah\\Desktop\\" + input) + ".dat";
+
+        // Comprobamos que SO es
+        if (WIN_SYS) outputFile = string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input + ".dat";
         else outputFile = string(string(getenv("HOME")) + "/Desktop/" + input + ".dat");
 
         cout << outputFile << endl;
@@ -98,8 +117,10 @@ void leerArbolDelEscritorio(ArbolBinario<char> *A){
         // Necesario para tratar error
         is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try {
-            if (getenv("windir")) is.open(string("C:\\Users\\abrah\\Desktop\\" + input));
-            else is.open(string(string(getenv("HOME")) + "/Desktop/" + input));
+
+            if (WIN_SYS) is.open(string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input);
+            else is.open(string(getenv("HOME")) + "/Desktop/" + input);
+
         }catch (std::system_error& e){
             error = true;
             cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
@@ -113,44 +134,64 @@ void leerArbolDelEscritorio(ArbolBinario<char> *A){
     }
 }
 
+void comprobarSistema(){
+    struct utsname sysinfo;
+    if(uname(&sysinfo)) exit(9);
+
+    // Estamos en Windows (CYGWIN_NT-X)
+    if (sysinfo.sysname[0] == 'C') WIN_SYS = true;
+}
 
 int main() {
 
-    // TODO Para comprobar la estructura de cada árbol, mirar apuntes del iPad "Notas Árbol Binario"
+    // TODO NO ELIMINAR
+    comprobarSistema();
 
+    // TODO Para comprobar la estructura de cada árbol, mirar apuntes del iPad "Notas Árbol Binario"
     ArbolBinario<char> A;
     ArbolBinario<char> B;
 
     //pedirYGuardar();
     leerArbolDelEscritorio(&A);
-    leerArbolDelEscritorio(&B);
+    //leerArbolDelEscritorio(&B);
 
     cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(A);
     cout << "*********************" << endl << endl;
 
-    cout << "****** Árbol ******" << endl;
+    /*cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(B);
-    cout << "*********************" << endl << endl;
-
-    const char* tSimilares = similares(A, B) ? "Sí" : "No";
-    cout << "Los árboles son similares? " << tSimilares << endl;
+    cout << "*********************" << endl << endl;*/
 
     /*
-    // Ejericicio 1
+    // Ejericicio 1 (Práctica 1)
     ejercicio1_1(B);
 
-    // Ejercicio 2 y 5
+    // Ejercicio 2 y 5 (Práctica 1)
     ejercicio2_5_1(B);
 
-    // Ejercicio 3 y 5
+    // Ejercicio 3 y 5 (Práctica 1)
     ejercicio3_5_1(B);
 
-    // Ejercicio 6
+    // Ejercicio 6 (Práctica 1)
     ejercicio6_1(B);
 
-    // Ejercicio 7
-    ejercicio7_1(B);*/
+    // Ejercicio 7 (Práctica 1)
+    ejercicio7_1(B);
+
+    // Ejercicio 1 (Práctica 2)
+    ejercicio1_2(A);*/
+
+    // Ejercicio 2 (Práctica 2)
+    ejercicio2_2(A);
+
+    cout << "--- Árbol Original ---" << endl;
+    imprimirArbolBinario(A);
+    cout << "----------------------" << endl;
+
+    cout << "--- Árbol Original ---" << endl;
+    imprimirArbolBinario(reflejar(A));
+    cout << "----------------------" << endl;
 
     return 0;
 }
