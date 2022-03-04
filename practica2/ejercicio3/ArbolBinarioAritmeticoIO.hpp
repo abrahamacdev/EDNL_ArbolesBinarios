@@ -2,18 +2,18 @@
 // Created by abrah on 04/03/2022.
 //
 
-#ifndef PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_H
-#define PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_H
+#ifndef PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_HPP
+#define PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_HPP
 
-#include "ejercicio3_2.h"
+#include "ExpresionAritmetica.h"
+#include "../../ArbolBinario.h"
 
 /**
  * Precondicion: A está vacío
  * Postcondicion:  Rellena el árbol A con la estructura y elementos leídos en preorden de la entrada
  * estándar, usando fin como elemento especial para introducir nodos nulos.
  */
-template <typename T>
-void rellenarArbolBinarioAritmetico(ArbolBinario<ExprArit>& A, const char& fin);
+void rellenarArbolBinarioAritmetico(ArbolBinario<ExpresionAritmetica>& A, char fin);
 
 /**
  * Precondicion: A está vacío
@@ -21,20 +21,17 @@ void rellenarArbolBinarioAritmetico(ArbolBinario<ExprArit>& A, const char& fin);
  * que denota un nodo nulo seguido de los elementos en preorden, incluyendo los
  * correspondientes a nodos nulos.
  */
-template <typename T>
-void rellenarArbolBinario(std::istream& input, ArbolBinario<T>& A);
+void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionAritmetica>& A);
 
 /**
  * Postcondicion: Muestra los nodos de A en la salida estándar
  */
-template <typename T>
-void imprimirArbolBinario(const ArbolBinario<T>& A);
+void imprimirArbolBinarioAritmetico(const ArbolBinario<ExpresionAritmetica>& A);
 
 /**
  *  Postcondicion: Inserta en el flujo de salida os los nodos de A en preorden, precedidos del
  *  elemento especial usado para denotar un nodo nulo.
  */
-template <typename T>
-void imprimirArbolBinario (std::ostream& os, const ArbolBinario<T>& A, const T& fin);
+//void imprimirArbolBinarioAritmetico(std::ostream& os, const ArbolBinario<ExpresionAritmetica>& A, char fin);
 
-#endif //PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_H
+#endif //PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_HPP

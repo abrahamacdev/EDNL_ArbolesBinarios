@@ -9,6 +9,8 @@
 #include "practica1/ejercicio7/ejercicio7_1.h"
 #include "practica2/ejercicio1/ejercicio1_2.h"
 #include "practica2/ejercicio2/ejercicio2_2.h"
+#include "practica2/ejercicio3/ejercicio3_2.hpp"
+#include "practica2/ejercicio3/ArbolBinarioAritmeticoIO.hpp"
 #include <sys/utsname.h>
 
 static bool WIN_SYS = false;
@@ -55,7 +57,16 @@ void ejercicio1_2(ArbolBinario<T>& A, ArbolBinario<T>& B){
 template <typename T>
 void ejercicio2_2(ArbolBinario<T>& A){
 
+    // Ejercicio 2 (Práctica 2)
+    ejercicio2_2(A);
 
+    cout << "--- Árbol Original ---" << endl;
+    imprimirArbolBinario(A);
+    cout << "----------------------" << endl;
+
+    cout << "--- Árbol Original ---" << endl;
+    imprimirArbolBinario(reflejar(A));
+    cout << "----------------------" << endl;
 }
 
 void pedirYGuardar(){
@@ -151,13 +162,22 @@ int main() {
     ArbolBinario<char> A;
     ArbolBinario<char> B;
 
+    ArbolBinario<ExpresionAritmetica> C;
+    //rellenarArbolBinarioAritmetico(C, '#');
+
+    ifstream is;
+    is.open(string(getenv("HOME")) + "/Desktop/f.dat");
+
+    rellenarArbolBinarioAritmetico(is, C);
+    imprimirArbolBinarioAritmetico(C);
+
     //pedirYGuardar();
-    leerArbolDelEscritorio(&A);
+    //leerArbolDelEscritorio(&A);
     //leerArbolDelEscritorio(&B);
 
-    cout << "****** Árbol ******" << endl;
+    /*cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(A);
-    cout << "*********************" << endl << endl;
+    cout << "*********************" << endl << endl;*/
 
     /*cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(B);
@@ -182,16 +202,7 @@ int main() {
     // Ejercicio 1 (Práctica 2)
     ejercicio1_2(A);*/
 
-    // Ejercicio 2 (Práctica 2)
-    ejercicio2_2(A);
 
-    cout << "--- Árbol Original ---" << endl;
-    imprimirArbolBinario(A);
-    cout << "----------------------" << endl;
-
-    cout << "--- Árbol Original ---" << endl;
-    imprimirArbolBinario(reflejar(A));
-    cout << "----------------------" << endl;
 
     return 0;
 }
