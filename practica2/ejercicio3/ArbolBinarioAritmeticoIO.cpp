@@ -31,7 +31,6 @@ bool isNumber(const string& s){
 }
 
 
-
 void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
                    const typename ArbolBinario<ExpresionAritmetica>::nodo& n = ArbolBinario<ExpresionAritmetica>::NODO_NULO,
                    bool hijoIzdo = true){
@@ -48,34 +47,16 @@ void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
         // La raíz tiene que ser un operador
         if (input.length() == 1 && input[0] != fin){
 
-            struct ExpresionAritmetica temp{};
-            temp.exprArit = OPERADOR;
+            ExpresionAritmetica temp;
 
             char op = input[0];
             bool opValida = true;
 
-            switch (op) {
-
-                case '+':
-                    temp.valor = 1.0;
-                    break;
-
-                case '-':
-                    temp.valor = 2.0;
-                    break;
-
-                case '*':
-                    temp.valor = 3.0;
-                    break;
-
-                case '/':
-                    temp.valor = 4.0;
-                    break;
-
-                default:
-                    cout << "Operación no válida (+,-,*,/)" << endl;
-                    opValida = false;
-                    break;
+            if (op != '+' && op != '-' && op != '*' && op != '/'){
+                cout << "Operación no válida (+,-,*,/)" << endl;
+                opValida = false;
+            } else {
+                temp = ExpresionAritmetica(op);
             }
 
             // Insertamos la raíz del árbol
@@ -115,50 +96,14 @@ void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
         // Estamos introduciendo un operador
         if (input.length() == 1 && input[0] != fin && isalpha(input[0])){
 
-            struct ExpresionAritmetica temp{};
-            temp.exprArit = OPERADOR;
+            ExpresionAritmetica temp(input[0]);
 
-            char op = input[0];
-            bool opValida = true;
+            // Insertamos la raíz
+            A.insertarRaiz(temp);
 
-            switch (op) {
-
-                case '+':
-                    temp.valor = 1.0;
-                    break;
-
-                case '-':
-                    temp.valor = 2.0;
-                    break;
-
-                case '*':
-                    temp.valor = 3.0;
-                    break;
-
-                case '/':
-                    temp.valor = 4.0;
-                    break;
-
-                default:
-                    cout << "Operación no válida (+,-,*,/). También puedes introducir un número." << endl;
-                    opValida = false;
-                    break;
-            }
-
-            // Insertamos el operador
-            if (opValida){
-
-                // Insertamos la raíz
-                A.insertarRaiz(temp);
-
-                // Preguntamos por el hijo izquierdo
-                preguntarNodo(A, fin, A.raiz(), true);
-                preguntarNodo(A, fin, A.raiz(), false);
-            }
-            // Insertamos el operando
-            else {
-                preguntarNodo(A, fin, n, hijoIzdo);
-            }
+            // Preguntamos por el hijo izquierdo
+            preguntarNodo(A, fin, A.raiz(), true);
+            preguntarNodo(A, fin, A.raiz(), false);
         }
 
         // Estamos introduciendo números
@@ -166,9 +111,7 @@ void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
 
             typename ArbolBinario<ExpresionAritmetica>::nodo tempN;
 
-            struct ExpresionAritmetica temp{};
-            temp.exprArit = OPERANDO;
-            temp.valor = stod(input);
+            ExpresionAritmetica temp(input);
 
             // Guardamos el hijo izquierdo del nodo n
             if (hijoIzdo){
@@ -250,23 +193,7 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
 
     if (raiz != fin){
 
-        ExpresionAritmetica temp;
-        temp.exprArit = OPERADOR;
-
-        switch (raiz) {
-            case '+':
-                temp.valor = 1.0;
-                break;
-            case '-':
-                temp.valor = 2.0;
-                break;
-            case '*':
-                temp.valor = 3.0;
-                break;
-            case '/':
-                temp.valor = 4.0;
-                break;
-        }
+        ExpresionAritmetica temp(raiz);
 
         // Insertamos la raíz
         A.insertarRaiz(temp);
@@ -275,20 +202,24 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
             input.get();    // Leemos el espacio
 
             // Leemos todos los caracteres y los guardamos
-            vector<string> elementos = vector<string>{};
+            vector<ExpresionAritmetica> elementos = vector<ExpresionAritmetica>{};
             char temp = input.get();
             string tempS = string{""};
 
             while (!input.eof()){
 
                 if (temp == ' '){
-                    elementos.push_back(tempS);
+                    elementos.emplace_back(ExpresionAritmetica(tempS));
                     tempS = string{};
                 } else {
                     tempS += temp;
                 }
 
                 temp = input.get();
+            }
+
+            for(ExpresionAritmetica e : elementos){
+                cout << e.parsearExpresionAritmetica() << endl;
             }
 
             /*typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raiz();

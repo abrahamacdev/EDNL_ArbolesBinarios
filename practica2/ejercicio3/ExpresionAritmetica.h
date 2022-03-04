@@ -19,6 +19,57 @@ public:
     ExprArit exprArit;
     double valor;
 
+    ExpresionAritmetica();
+    ExpresionAritmetica(char o): exprArit(OPERADOR){
+        switch (o) {
+
+            // Es una suma
+            case '+':
+                valor = 1;
+                break;
+            case '-':
+                valor = 2;
+                break;
+            case '*':
+                valor = 3;
+                break;
+            case '/':
+                valor = 4;
+                break;
+            default:
+                valor = 1;
+                break;
+        }
+    }
+    ExpresionAritmetica(string v) {
+        if (v.length() == 1){
+            exprArit = OPERADOR;
+            switch (v[0]) {
+
+                // Es una suma
+                case '+':
+                    valor = 1;
+                    break;
+                case '-':
+                    valor = 2;
+                    break;
+                case '*':
+                    valor = 3;
+                    break;
+                case '/':
+                    valor = 4;
+                    break;
+                default:
+                    valor = 1;
+                    break;
+            }
+        }
+        else {
+            exprArit = OPERANDO;
+            stod(v);
+        }
+    };
+
     string parsearExpresionAritmetica() const {
         if (exprArit == OPERADOR){
 
