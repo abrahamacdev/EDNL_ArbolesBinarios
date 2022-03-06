@@ -171,6 +171,8 @@ int main() {
     rellenarArbolBinarioAritmetico(is, C);
     imprimirArbolBinarioAritmetico(C);
 
+    cout << "El resultado de evaluar el árbol es: " << evaluar(C) << endl;
+
     //pedirYGuardar();
     //leerArbolDelEscritorio(&A);
     //leerArbolDelEscritorio(&B);

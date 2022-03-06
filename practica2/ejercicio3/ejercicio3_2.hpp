@@ -8,7 +8,36 @@
 #include "ExpresionAritmetica.hpp"
 #include "../../ArbolBinario.h"
 
-double evaluar(ArbolBinario<ExpresionAritmetica>& A, typename ArbolBinario<ExpresionAritmetica>::nodo n){}
+double evaluar(ArbolBinario<ExpresionAritmetica>& A, typename ArbolBinario<ExpresionAritmetica>::nodo n){
+
+    ExpresionAritmetica& tempExpr = A.elemento(n);
+
+    // Es un nodo hoja, devolvemos el valor del operando
+    if (tempExpr.exprArit == OPERANDO) return tempExpr.valor;
+
+    // Es un operador, tenemos que evaluar los hijos
+    else {
+
+        switch ((int) tempExpr.valor) {
+
+            // Es una suma
+            case 1:
+                return evaluar(A, A.hijoIzdo(n)) + evaluar(A, A.hijoDer(n));
+
+            // Es una resta
+            case 2:
+                return evaluar(A, A.hijoIzdo(n)) - evaluar(A, A.hijoDer(n));
+
+            // Es una multiplicación
+            case 3:
+                return evaluar(A, A.hijoIzdo(n)) * evaluar(A, A.hijoDer(n));
+
+            // Es una división
+            case 4:
+                return evaluar(A, A.hijoIzdo(n)) / evaluar(A, A.hijoDer(n));
+        }
+    }
+}
 
 double evaluar(ArbolBinario<ExpresionAritmetica>& A){
 
