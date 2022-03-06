@@ -3,8 +3,8 @@
 //
 
 #include <vector>
-#include "ExpresionAritmetica.h"
 #include "../../ArbolBinario.h"
+#include "ExpresionAritmetica.hpp"
 
 using namespace std;
 
@@ -29,6 +29,8 @@ bool isNumber(const string& s){
     }
     return retVal;
 }
+
+
 
 
 void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
@@ -56,7 +58,7 @@ void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
                 cout << "Operación no válida (+,-,*,/)" << endl;
                 opValida = false;
             } else {
-                temp = ExpresionAritmetica(op);
+                temp = ExpresionAritmetica{op};
             }
 
             // Insertamos la raíz del árbol
@@ -96,7 +98,7 @@ void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
         // Estamos introduciendo un operador
         if (input.length() == 1 && input[0] != fin && isalpha(input[0])){
 
-            ExpresionAritmetica temp(input[0]);
+            ExpresionAritmetica temp{input};
 
             // Insertamos la raíz
             A.insertarRaiz(temp);
@@ -111,7 +113,7 @@ void preguntarNodo(ArbolBinario<ExpresionAritmetica>& A, char fin,
 
             typename ArbolBinario<ExpresionAritmetica>::nodo tempN;
 
-            ExpresionAritmetica temp(input);
+            ExpresionAritmetica temp{input};
 
             // Guardamos el hijo izquierdo del nodo n
             if (hijoIzdo){
@@ -145,37 +147,34 @@ void rellenarArbolBinarioAritmetico(ArbolBinario<ExpresionAritmetica>& A, char f
 }
 
 
-void leerNodo(istream& input, ArbolBinario<ExpresionAritmetica>& A, typename ArbolBinario<ExpresionAritmetica>::nodo& n,
-              char fin, bool esIzqdo, string& temporal){
+void leerNodo(vector<string>& vector, ArbolBinario<ExpresionAritmetica>& A,
+              typename ArbolBinario<ExpresionAritmetica>::nodo& n, const string& fin, bool esIzqdo){
 
-    char e = input.get();
-    input.get();            // Leemos el espacio
+    // Obtenemos el primer elemento del vector
+    string elemento = vector.front();
+    vector.erase(vector.begin());
 
-    typename ArbolBinario<char>::nodo tempNodo;
+    // No es el caracter fin
+    if (elemento != fin){
 
-    if (e != fin){
-
-        if (e == ' '){
-            cout << temporal << endl;
-        }else {
-            temporal += e;
-        }
-
-        cout << e << endl;
+        ExpresionAritmetica expArit = ExpresionAritmetica{elemento};
+        typename ArbolBinario<ExpresionAritmetica>::nodo tempNodo;
 
         // Insertamos hijo izquierdo del nodo n
-        /*if (esIzqdo){
-            A.insertarHijoIzdo(n, e);
+        if (esIzqdo){
+            A.insertarHijoIzdo(n, expArit);
             tempNodo = A.hijoIzdo(n);
         }
-            // Insertamos hijo derecho del nodo n
+
+        // Insertamos hijo derecho del nodo n
         else {
-            A.insertarHijoDer(n, e);
+            A.insertarHijoDer(n, expArit);
             tempNodo = A.hijoDer(n);
         }
+
         // Leemos los dos hijos del nuevo nodo
-        leerNodo(input, A, tempNodo, fin, true);
-        leerNodo(input, A, tempNodo, fin, false);*/
+        leerNodo(vector, A, tempNodo, fin, true);
+        leerNodo(vector, A, tempNodo, fin, false);
     }
 }
 
@@ -186,14 +185,14 @@ void leerNodo(istream& input, ArbolBinario<ExpresionAritmetica>& A, typename Arb
  * correspondientes a nodos nulos.
  */
 void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionAritmetica>& A){
-    char fin = (char) input.get();
+    string fin = string {(char) input.get()};
     input.get();    // Leemos el salto de línea
 
-    char raiz = input.get();
+    char raizChar = input.get();
 
-    if (raiz != fin){
+    if (raizChar != fin[0]){
 
-        ExpresionAritmetica temp(raiz);
+        ExpresionAritmetica temp{raizChar};
 
         // Insertamos la raíz
         A.insertarRaiz(temp);
@@ -202,14 +201,14 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
             input.get();    // Leemos el espacio
 
             // Leemos todos los caracteres y los guardamos
-            vector<ExpresionAritmetica> elementos = vector<ExpresionAritmetica>{};
+            vector<string> elementos = vector<string>{};
             char temp = input.get();
             string tempS = string{""};
 
             while (!input.eof()){
 
                 if (temp == ' '){
-                    elementos.emplace_back(ExpresionAritmetica(tempS));
+                    elementos.emplace_back(tempS);
                     tempS = string{};
                 } else {
                     tempS += temp;
@@ -218,11 +217,11 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
                 temp = input.get();
             }
 
-            for(ExpresionAritmetica e : elementos){
-                cout << e.parsearExpresionAritmetica() << endl;
-            }
-
-            /*typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raiz();
+            // Añadimos los elementos al árbol binario
+            typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raiz();
+            leerNodo(elementos, A, n, fin, true);
+            leerNodo(elementos, A, n, fin, false);
+            /*typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raizChar();
 
             string s;
 
@@ -233,6 +232,10 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
         catch (std::exception e){}
     }
 }
+
+
+
+
 
 void imprimirPantalla(const ArbolBinario<ExpresionAritmetica>& A, const typename ArbolBinario<ExpresionAritmetica>::nodo& n){
 

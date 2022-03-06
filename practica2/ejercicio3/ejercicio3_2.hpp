@@ -5,7 +5,7 @@
 #ifndef PRACTICA1EDNL_EJERCICIO3_2_HPP
 #define PRACTICA1EDNL_EJERCICIO3_2_HPP
 
-#include "ExpresionAritmetica.h"
+#include "ExpresionAritmetica.hpp"
 #include "../../ArbolBinario.h"
 
 double evaluar(ArbolBinario<ExpresionAritmetica>& A, typename ArbolBinario<ExpresionAritmetica>::nodo n){}

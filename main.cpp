@@ -166,7 +166,7 @@ int main() {
     //rellenarArbolBinarioAritmetico(C, '#');
 
     ifstream is;
-    is.open(string(getenv("HOME")) + "/Desktop/f.dat");
+    is.open(string(getenv("HOME")) + "/Desktop/g.dat");
 
     rellenarArbolBinarioAritmetico(is, C);
     imprimirArbolBinarioAritmetico(C);

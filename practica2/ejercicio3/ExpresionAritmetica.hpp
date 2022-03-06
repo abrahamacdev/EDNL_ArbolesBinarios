@@ -2,12 +2,15 @@
 // Created by Judith Olalde Alonso on 4/3/22.
 //
 
-#ifndef PRACTICA1EDNL_EXPRESIONARITMETICA_H
-#define PRACTICA1EDNL_EXPRESIONARITMETICA_H
+#ifndef PRACTICA1EDNL_EXPRESIONARITMETICA_HPP
+#define PRACTICA1EDNL_EXPRESIONARITMETICA_HPP
 
 #include "string"
+#include "vector"
 
 using namespace std;
+
+static const vector<char> ops = {'+', '-', '*', '/'};
 
 enum ExprArit {
     OPERADOR,       // 1.0 = Suma | 2.0 = Resta | 3.0 = Multiplicación | 4.0 = División
@@ -15,12 +18,13 @@ enum ExprArit {
 };
 
 class ExpresionAritmetica {
+
 public:
     ExprArit exprArit;
-    double valor;
+    double valor{};
 
-    ExpresionAritmetica();
-    ExpresionAritmetica(char o): exprArit(OPERADOR){
+    ExpresionAritmetica()= default;
+    explicit ExpresionAritmetica(char o): exprArit(OPERADOR){
         switch (o) {
 
             // Es una suma
@@ -41,8 +45,9 @@ public:
                 break;
         }
     }
-    ExpresionAritmetica(string v) {
-        if (v.length() == 1){
+    explicit ExpresionAritmetica(string v) {
+
+        if (v.length() == 1 && count(ops.begin(), ops.end(), v[0])){
             exprArit = OPERADOR;
             switch (v[0]) {
 
@@ -66,9 +71,10 @@ public:
         }
         else {
             exprArit = OPERANDO;
-            stod(v);
+            valor = stod(v);
         }
     };
+    explicit ExpresionAritmetica(double v): valor(v), exprArit(OPERANDO){};
 
     string parsearExpresionAritmetica() const {
         if (exprArit == OPERADOR){
@@ -122,4 +128,4 @@ public:
     }
 };
 
-#endif //PRACTICA1EDNL_EXPRESIONARITMETICA_H
+#endif //PRACTICA1EDNL_EXPRESIONARITMETICA_HPP

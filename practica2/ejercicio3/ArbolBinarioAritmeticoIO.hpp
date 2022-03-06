@@ -5,7 +5,7 @@
 #ifndef PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_HPP
 #define PRACTICA1EDNL_ARBOLBINARIOARITMETICOIO_HPP
 
-#include "ExpresionAritmetica.h"
+#include "ExpresionAritmetica.hpp"
 #include "../../ArbolBinario.h"
 
 /**
