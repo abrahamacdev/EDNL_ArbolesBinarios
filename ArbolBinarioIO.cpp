@@ -84,6 +84,7 @@ void leerNodo(istream& input, ArbolBinario<T>& A, typename ArbolBinario<T>::nodo
         leerNodo(input, A, tempNodo, fin, false);
     }
 }
+
 template <typename T>
 void rellenarArbolBinario(istream& input, ArbolBinario<T>& A){
 

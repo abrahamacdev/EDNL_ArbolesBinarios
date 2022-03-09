@@ -22,7 +22,7 @@ bool isAlpha(const string& s){
 bool isNumber(const string& s){
     bool retVal = false;
     for(char i : s){
-        if(isnumber(i)){
+        if(isdigit(i)){
             retVal = true;
             break;
         }
@@ -185,24 +185,55 @@ void leerNodo(vector<string>& vector, ArbolBinario<ExpresionAritmetica>& A,
  * correspondientes a nodos nulos.
  */
 void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionAritmetica>& A){
-    string fin = string {(char) input.get()};
-    input.get();    // Leemos el salto de línea
+    string fin = string {(char) input.get()};   // Leemos el elemento fin
+    input.get();                                // Leemos el salto de línea
 
-    char raizChar = input.get();
+    string linea;
+    getline(input, linea);
 
+    // Comprobamos que el árbol no esté vacío
+    if (linea[0] != fin[0]){
+
+        A.insertarRaiz(ExpresionAritmetica{linea[0]});
+
+        linea = linea.substr(2);
+
+        vector<string> elementos = vector<string>{};
+
+        // Separamos por espacios
+        string temp;
+        for(char c : linea){
+            if(c == ' '){
+                elementos.push_back(temp);
+                temp = {};
+            }
+            else {
+                temp += c;
+            }
+        }
+
+        // Añadimos los elementos al árbol binario
+        typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raiz();
+        leerNodo(elementos, A, n, fin, true);
+        leerNodo(elementos, A, n, fin, false);
+    }
+
+    /*char raizChar = input.get();                // Leemos la operación raíz
+
+    // No es un árbol vacío
     if (raizChar != fin[0]){
 
-        ExpresionAritmetica temp{raizChar};
+        ExpresionAritmetica tempExpr{raizChar};
 
         // Insertamos la raíz
-        A.insertarRaiz(temp);
+        A.insertarRaiz(tempExpr);
 
         try {
-            input.get();    // Leemos el espacio
+            input.get();                        // Leemos el espacio
 
             // Leemos todos los caracteres y los guardamos
             vector<string> elementos = vector<string>{};
-            char temp = input.get();
+            char temp = input.get();            // Leemos el número/operacion
             string tempS = string{""};
 
             while (!input.eof()){
@@ -212,25 +243,34 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
                     tempS = string{};
                 } else {
                     tempS += temp;
+
+                    for (auto const& c : elementos) std::cout << c << ' ';
+                    cout << endl;
                 }
+
 
                 temp = input.get();
             }
+
+            cout << "AAAAA" << endl;
+
+            for (auto const& c : elementos) std::cout << c << ' ';
+            cout << endl;
 
             // Añadimos los elementos al árbol binario
             typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raiz();
             leerNodo(elementos, A, n, fin, true);
             leerNodo(elementos, A, n, fin, false);
-            /*typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raizChar();
+            typename ArbolBinario<ExpresionAritmetica>::nodo n = A.raizChar();
 
             string s;
 
             // Continuamos leyendo el árbol
             leerNodo(input, A, n, fin, true, s);
-            leerNodo(input, A, n, fin, false, s);*/
+            leerNodo(input, A, n, fin, false, s);
         }
         catch (std::exception e){}
-    }
+    }*/
 }
 
 

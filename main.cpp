@@ -145,6 +145,41 @@ void leerArbolDelEscritorio(ArbolBinario<char> *A){
     }
 }
 
+void leerArbolExprAritEscritorio(ArbolBinario<ExpresionAritmetica>& A){
+
+    string input;
+    bool continuar = true;
+    bool error = false;
+
+    while (continuar){
+
+        error = false;
+
+        cout << "Introduzca el nombre del archivo (se buscará en el escritorio): ";
+        cin >> input;
+
+        ifstream is;
+
+        // Necesario para tratar error
+        is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try {
+
+            if (WIN_SYS) is.open(string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input);
+            else is.open(string(getenv("HOME")) + "/Desktop/" + input);
+
+        }catch (std::system_error& e){
+            error = true;
+            cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
+        }
+
+        if (!error){
+            rellenarArbolBinarioAritmetico(is, A);
+            is.close();
+            continuar = false;
+        }
+    }
+}
+
 void comprobarSistema(){
     struct utsname sysinfo;
     if(uname(&sysinfo)) exit(9);
@@ -165,13 +200,12 @@ int main() {
     ArbolBinario<ExpresionAritmetica> C;
     //rellenarArbolBinarioAritmetico(C, '#');
 
-    ifstream is;
-    is.open(string(getenv("HOME")) + "/Desktop/g.dat");
-
-    rellenarArbolBinarioAritmetico(is, C);
+    leerArbolExprAritEscritorio(C);
     imprimirArbolBinarioAritmetico(C);
+    cout << "Solución: " << evaluar(C) << endl;
 
-    cout << "El resultado de evaluar el árbol es: " << evaluar(C) << endl;
+
+    //cout << "El resultado de evaluar el árbol es: " << evaluar(C) << endl;
 
     //pedirYGuardar();
     //leerArbolDelEscritorio(&A);
