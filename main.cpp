@@ -11,9 +11,153 @@
 #include "practica2/ejercicio2/ejercicio2_2.h"
 #include "practica2/ejercicio3/ejercicio3_2.hpp"
 #include "practica2/ejercicio3/ArbolBinarioAritmeticoIO.hpp"
+#include "preExamen/poda.cpp"
+#include "examen/examen.cpp"
 #include <sys/utsname.h>
 
 static bool WIN_SYS = false;
+
+void pedirYGuardar(){
+
+    bool reintentar = true;
+    string input;
+    while (reintentar){
+
+        ArbolBinario<char> A;
+
+        rellenarArbolBinario(A, '#');
+
+        cout << " *** Árbol *** " << endl;
+        imprimirArbolBinario(A);
+        cout << " ************* " << endl;
+
+        cout << "Introduce el nombre del archivo (sin el .dat): ";
+        cin >> input;
+        cout << endl;
+
+        string outputFile;
+
+        // Comprobamos que SO es
+        if (WIN_SYS) outputFile = string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input + ".dat";
+        else outputFile = string(string(getenv("HOME")) + "/Desktop/" + input + ".dat");
+
+        cout << outputFile << endl;
+
+        cout << "Guardanddo en " << outputFile << endl;
+
+        ofstream o;
+        o.open(outputFile);
+        imprimirArbolBinario(o, A, '#');
+        o.close();
+
+        cout << "Guardamos otro árbol? (S|N): ";
+        cin >> input;
+        cout << endl;
+
+        if (input != string("S") and input != string("s")) reintentar = false;
+    }
+}
+
+void leerArbolDelEscritorio(ArbolBinario<char> *A, const string& ruta = ""){
+
+    // Recibimos la ruta por parámetro
+    if (!ruta.empty()){
+        ifstream is;
+
+        // Necesario para tratar error
+        is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try {
+
+            is.open(ruta);
+
+        }catch (std::system_error& e){
+            cout << "Ocurrió un error al leer el archivo de la ruta '" << ruta << "'" << endl;
+            exit(1);
+        }
+
+
+        rellenarArbolBinario(is, *A);
+        is.close();
+    }
+
+        // Pedimos la ruta por teclado
+    else {
+        string input;
+        bool continuar = true;
+        bool error = false;
+
+        while (continuar){
+
+            error = false;
+
+            cout << "Introduzca el nombre del archivo (se buscará en el escritorio): ";
+            cin >> input;
+
+            ifstream is;
+
+            // Necesario para tratar error
+            is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+            try {
+
+                if (WIN_SYS) is.open(string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input);
+                else is.open(string(getenv("HOME")) + "/Desktop/" + input);
+
+            }catch (std::system_error& e){
+                error = true;
+                cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
+            }
+
+            if (!error){
+                rellenarArbolBinario(is, *A);
+                is.close();
+                continuar = false;
+            }
+        }
+    }
+}
+
+void leerArbolExprAritEscritorio(ArbolBinario<ExpresionAritmetica>& A){
+
+    string input;
+    bool continuar = true;
+    bool error = false;
+
+    while (continuar){
+
+        error = false;
+
+        cout << "Introduzca el nombre del archivo (se buscará en el escritorio): ";
+        cin >> input;
+
+        ifstream is;
+
+        // Necesario para tratar error
+        is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try {
+
+            if (WIN_SYS) is.open(string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input);
+            else is.open(string(getenv("HOME")) + "/Desktop/" + input);
+
+        }catch (std::system_error& e){
+            error = true;
+            cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
+        }
+
+        if (!error){
+            rellenarArbolBinarioAritmetico(is, A);
+            is.close();
+            continuar = false;
+        }
+    }
+}
+
+void comprobarSistema(){
+    struct utsname sysinfo;
+    if(uname(&sysinfo)) exit(9);
+
+    // Estamos en Windows (CYGWIN_NT-X)
+    if (sysinfo.sysname[0] == 'C') WIN_SYS = true;
+}
 
 template <typename T>
 void ejercicio1_1(ArbolBinario<T>& B){
@@ -69,123 +213,23 @@ void ejercicio2_2(ArbolBinario<T>& A){
     cout << "----------------------" << endl;
 }
 
-void pedirYGuardar(){
+void ejercicioPreExamen_poda(){
 
-    bool reintentar = true;
-    string input;
-    while (reintentar){
+    ArbolBinario<char> A;
 
-        ArbolBinario<char> A;
+    string ruta;
+    if (WIN_SYS) ruta = string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\b.dat";
+    else ruta = string(getenv("HOME")) + "/Desktop/b.dat";
 
-        rellenarArbolBinario(A, '#');
+    leerArbolDelEscritorio(&A, ruta);
 
-        cout << " *** Árbol *** " << endl;
-        imprimirArbolBinario(A);
-        cout << " ************* " << endl;
+    typename ArbolBinario<char>::nodo g = A.hijoIzdo(A.hijoDer(A.hijoDer(A.raiz())));
+    cout << "El nodo que utilizaremos para podar es '" << A.elemento(g) << "'" << endl;
+    poda(A, g);
 
-        cout << "Introduce el nombre del archivo: ";
-        cin >> input;
-        cout << endl;
-
-        string outputFile;
-
-        // Comprobamos que SO es
-        if (WIN_SYS) outputFile = string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input + ".dat";
-        else outputFile = string(string(getenv("HOME")) + "/Desktop/" + input + ".dat");
-
-        cout << outputFile << endl;
-
-        cout << "Guardanddo en " << outputFile << endl;
-
-        ofstream o;
-        o.open(outputFile);
-        imprimirArbolBinario(o, A, '#');
-        o.close();
-
-        cout << "Guardamos otro árbol? (S|N): ";
-        cin >> input;
-        cout << endl;
-
-        if (input != string("S") and input != string("s")) reintentar = false;
-    }
-}
-
-void leerArbolDelEscritorio(ArbolBinario<char> *A){
-
-    string input;
-    bool continuar = true;
-    bool error = false;
-
-    while (continuar){
-
-        error = false;
-
-        cout << "Introduzca el nombre del archivo (se buscará en el escritorio): ";
-        cin >> input;
-
-        ifstream is;
-
-        // Necesario para tratar error
-        is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        try {
-
-            if (WIN_SYS) is.open(string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input);
-            else is.open(string(getenv("HOME")) + "/Desktop/" + input);
-
-        }catch (std::system_error& e){
-            error = true;
-            cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
-        }
-
-        if (!error){
-            rellenarArbolBinario(is, *A);
-            is.close();
-            continuar = false;
-        }
-    }
-}
-
-void leerArbolExprAritEscritorio(ArbolBinario<ExpresionAritmetica>& A){
-
-    string input;
-    bool continuar = true;
-    bool error = false;
-
-    while (continuar){
-
-        error = false;
-
-        cout << "Introduzca el nombre del archivo (se buscará en el escritorio): ";
-        cin >> input;
-
-        ifstream is;
-
-        // Necesario para tratar error
-        is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        try {
-
-            if (WIN_SYS) is.open(string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\" + input);
-            else is.open(string(getenv("HOME")) + "/Desktop/" + input);
-
-        }catch (std::system_error& e){
-            error = true;
-            cout << "Ocurrió un error. Vamos a volver a intentarlo" << endl;
-        }
-
-        if (!error){
-            rellenarArbolBinarioAritmetico(is, A);
-            is.close();
-            continuar = false;
-        }
-    }
-}
-
-void comprobarSistema(){
-    struct utsname sysinfo;
-    if(uname(&sysinfo)) exit(9);
-
-    // Estamos en Windows (CYGWIN_NT-X)
-    if (sysinfo.sysname[0] == 'C') WIN_SYS = true;
+    cout << "****** Árbol podado ******" << endl;
+    imprimirArbolBinario(A);
+    cout << "*********************" << endl;
 }
 
 int main() {
@@ -197,23 +241,27 @@ int main() {
     ArbolBinario<char> A;
     ArbolBinario<char> B;
 
-    ArbolBinario<ExpresionAritmetica> C;
+    /*ArbolBinario<ExpresionAritmetica> C;
     //rellenarArbolBinarioAritmetico(C, '#');
 
     leerArbolExprAritEscritorio(C);
     imprimirArbolBinarioAritmetico(C);
-    cout << "Solución: " << evaluar(C) << endl;
+    cout << "Solución: " << evaluar(C) << endl;*/
 
 
     //cout << "El resultado de evaluar el árbol es: " << evaluar(C) << endl;
 
+    string ruta;
+    if (WIN_SYS) ruta = string(getenv("HOMEDRIVE")) + string (getenv("HOMEPATH")) + "\\Desktop\\h.dat";
+    else ruta = string(getenv("HOME")) + "/Desktop/h.dat";
+
     //pedirYGuardar();
-    //leerArbolDelEscritorio(&A);
+    leerArbolDelEscritorio(&A, ruta);
     //leerArbolDelEscritorio(&B);
 
-    /*cout << "****** Árbol ******" << endl;
+    cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(A);
-    cout << "*********************" << endl << endl;*/
+    cout << "*********************" << endl;
 
     /*cout << "****** Árbol ******" << endl;
     imprimirArbolBinario(B);
@@ -224,7 +272,7 @@ int main() {
     ejercicio1_1(B);
 
     // Ejercicio 2 y 5 (Práctica 1)
-    ejercicio2_5_1(B);
+    ejercicio2_5_1(A);
 
     // Ejercicio 3 y 5 (Práctica 1)
     ejercicio3_5_1(B);
@@ -236,9 +284,14 @@ int main() {
     ejercicio7_1(B);
 
     // Ejercicio 1 (Práctica 2)
-    ejercicio1_2(A);*/
+    ejercicio1_2(A);
 
+    // Ejercicio Pre Examen (poda¨)
+    ejercicioPreExamen_poda();*/
 
+    int reflejados = cuentaReflejados(A);
+
+    cout << "La cantidad de nodos reflejados es: " << reflejados << endl;
 
     return 0;
 }

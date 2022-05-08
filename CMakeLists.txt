@@ -9,4 +9,4 @@ add_executable(Practica1EDNL main.cpp ArbolBinario.h ArbolBinarioIO.h ArbolBinar
         practica1/ejercicio6/ejercicio6_1.h practica1/ejercicio7/ejercicio7_1.h practica2/ejercicio1/ejercicio1_2.h
         practica2/ejercicio2/ejercicio2_2.h practica2/ejercicio3/ejercicio3_2.hpp
         practica2/ejercicio3/ArbolBinarioAritmeticoIO.hpp practica2/ejercicio3/ArbolBinarioAritmeticoIO.cpp
-        practica2/ejercicio3/ExpresionAritmetica.hpp)
+        practica2/ejercicio3/ExpresionAritmetica.hpp preExamen/poda.cpp preExamen/poda.h examen/examen.cpp examen/examen.h)

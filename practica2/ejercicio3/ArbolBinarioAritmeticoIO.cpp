@@ -188,19 +188,21 @@ void rellenarArbolBinarioAritmetico(std::istream& input, ArbolBinario<ExpresionA
     string fin = string {(char) input.get()};   // Leemos el elemento fin
     input.get();                                // Leemos el salto de línea
 
+    // Leemos toda la línea que contiene los nodos
     string linea;
     getline(input, linea);
 
     // Comprobamos que el árbol no esté vacío
     if (linea[0] != fin[0]){
 
+        // Añadimos la raíz al árbol binario
         A.insertarRaiz(ExpresionAritmetica{linea[0]});
 
+        // Eliminamos la raíz y el espacio que le sigue
         linea = linea.substr(2);
 
-        vector<string> elementos = vector<string>{};
-
         // Separamos por espacios
+        vector<string> elementos = vector<string>{};
         string temp;
         for(char c : linea){
             if(c == ' '){
